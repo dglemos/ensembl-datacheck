@@ -45,25 +45,25 @@ sub tests {
   /; 
   cmp_rows($self->dba, $sql_length, '<=', 1, $desc_length); 
 
-  my $desc_length = 'Source description';
-  my $diag_length = "Source description is missing"; 
-  my $sql_length = qq/
+  my $desc_length_2 = 'Source description';
+  my $diag_length_2 = "Source description is missing"; 
+  my $sql_length_2 = qq/
       SELECT count(*)
       FROM source
       WHERE description IS NULL
       or description = 'NULL'
   /;
-  is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
+  is_rows_zero($self->dba, $sql_length_2, $desc_length_2, $diag_length_2); 
 
-  my $desc_length = 'Source description';
-  my $diag_length = "Variation sources have long descriptions"; 
-  my $sql_length = qq/
+  my $desc_length_3 = 'Source description';
+  my $diag_length_3 = "Variation sources have long descriptions"; 
+  my $sql_length_3 = qq/
       SELECT count(*)
       FROM source
       WHERE length(description) > 100 
       and data_types = 'variation'
   /;
-  is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
+  is_rows_zero($self->dba, $sql_length_3, $desc_length_3, $diag_length_3); 
 
 }
 
