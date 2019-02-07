@@ -28,11 +28,22 @@ extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
 use constant {
   NAME        => 'Source',
-  DESCRIPTION => 'Checks that the soucre table is consistent',
+  DESCRIPTION => 'Checks that the source table is consistent',
+  DB_TYPES    => ['variation'],
+  TABLES      => ['source']
 };
 
 sub tests {
   my ($self) = @_;
+
+  my $desc_length = 'dbSNP sources version'; 
+  my $diag_length = "Different versions set for dbSNP sources";
+  my $sql_length = qq/
+      SELECT COUNT(DISTINCT version)
+      FROM source
+      WHERE name like '%dbSNP%'
+  /; 
+  cmp_rows($self->dba, $sql_length, '<=', 1, $desc_length); 
 
 }
 
