@@ -45,6 +45,26 @@ sub tests {
   /; 
   cmp_rows($self->dba, $sql_length, '<=', 1, $desc_length); 
 
+  my $desc_length = 'Source description';
+  my $diag_length = "Source description is missing"; 
+  my $sql_length = qq/
+      SELECT count(*)
+      FROM source
+      WHERE description IS NULL
+      or description = 'NULL'
+  /;
+  is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
+
+  my $desc_length = 'Source description';
+  my $diag_length = "Variation sources have long descriptions"; 
+  my $sql_length = qq/
+      SELECT count(*)
+      FROM source
+      WHERE length(description) > 100 
+      and data_types = 'variation'
+  /;
+  is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
+
 }
 
 1;
