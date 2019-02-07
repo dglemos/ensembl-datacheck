@@ -762,6 +762,13 @@
       "name" : "SequenceLevel",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::SequenceLevel"
    },
+   "Source" : {
+      "datacheck_type" : "critical",
+      "description" : "Checks that the soucre table is consistent",
+      "groups" : [],
+      "name" : "Source",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Source"
+   },
    "SpeciesNameUnique" : {
       "datacheck_type" : "critical",
       "description" : "Check that production_name and alias are unique across all species",
