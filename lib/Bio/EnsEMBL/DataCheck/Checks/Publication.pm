@@ -30,6 +30,8 @@ extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 use constant {
   NAME        => 'Publication',
   DESCRIPTION => 'Check the variation database does not contain duplicated Publication entries',
+  DB_TYPES    => ['variation'],
+  TABLES      => ['publication']
 };
 
 sub tests {
@@ -38,7 +40,7 @@ sub tests {
   $self->checkTitle('Variation publication title', 'Variation publications have no title'); 
 
   my $desc = 'Variation publication pmid, pmcid, doi'; 
-  my $diag = 'Variation publications have duplicated rows'; 
+  # my $diag = 'Variation publications have duplicated rows'; 
 
   $self->checkDuplicated('pmid', $desc); 
   $self->checkDuplicated('pmcid', $desc); 
