@@ -23,6 +23,7 @@ use strict;
 
 use Moose;
 use Test::More;
+use Bio::EnsEMBL::DataCheck::Test::DataCheck; 
 
 extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
@@ -34,6 +35,56 @@ use constant {
 sub tests {
   my ($self) = @_;
 
+  $self->checkTitle('Variation publication title', 'Variation publications have no title'); 
+
+  my $desc = 'Variation publication pmid, pmcid, doi'; 
+  my $diag = 'Variation publications have duplicated rows'; 
+
+  $self->checkDuplicated('pmid', $desc, $diag); 
+  $self->checkDuplicated('pmcid', $desc, $diag); 
+  $self->checkDuplicated('doi', $desc, $diag); 
+
+  $self->checkDisplay('variation', 'Variation cited variants display', 'Variation cited variants have variation.display = 0'); 
+  $self->checkDisplay('variation_feature', 'Variation cited variants display', 'Variation cited variants have variation_feature.display = 0');  
+
+}
+
+sub checkTitle {
+  my ($self, $desc, $diag) = @_; 
+
+  my $sql_title = qq/
+      SELECT count(*)
+      FROM publication
+      WHERE title IS NULL
+      or title = 'NULL'
+      or title = '' 
+  /;
+  is_rows_zero($self->dba, $sql_title, $desc, $diag); 
+  
+}
+
+sub checkDuplicated {
+  my ($self, $id, $desc, $diag) = @_; 
+  
+  my $sql_stmt = qq/
+      SELECT count(*)
+      FROM publication p1, publication p2 
+      WHERE p1. '$id' = p2. '$id'  
+      and p1.publication_id < p2.publication_id 
+  /;
+  is_rows_zero($self->dba, $sql_stmt, $desc, $diag); 
+}
+
+sub checkDisplay {
+  my ($self, $input, $desc, $diag) = @_; 
+  
+  my $sql_stmt = qq/
+      SELECT count(*)
+      FROM '$input',variation_citation 
+      WHERE '$input'.variation_id = variation_citation.variation_id  
+      and '$input'.display=0 
+  /;
+  is_rows_zero($self->dba, $sql_stmt, $desc, $diag); 
 }
 
 1;
