@@ -69,7 +69,7 @@ sub checkDuplicated {
   my $sql_stmt = qq/
       SELECT count(*)
       FROM publication p1, publication p2 
-      WHERE p1. '$id' = p2. '$id'  
+      WHERE p1.$id = p2.$id  
       and p1.publication_id < p2.publication_id 
   /;
   is_rows_zero($self->dba, $sql_stmt, $desc, $diag); 
@@ -80,9 +80,9 @@ sub checkDisplay {
   
   my $sql_stmt = qq/
       SELECT count(*)
-      FROM '$input',variation_citation 
-      WHERE '$input'.variation_id = variation_citation.variation_id  
-      and '$input'.display=0 
+      FROM $input,variation_citation 
+      WHERE $input.variation_id = variation_citation.variation_id  
+      and $input.display=0 
   /;
   is_rows_zero($self->dba, $sql_stmt, $desc, $diag); 
 }
