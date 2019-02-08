@@ -55,7 +55,7 @@ sub checkTitle {
   my ($self, $desc, $diag) = @_; 
 
   my $sql_title = qq/
-      SELECT count(*)
+      SELECT COUNT(*)
       FROM publication
       WHERE title IS NULL
       or title = 'NULL'
@@ -69,7 +69,7 @@ sub checkDuplicated {
   my ($self, $id, $desc) = @_; 
   
   my $sql_stmt = qq/
-      SELECT count(*)
+      SELECT COUNT(*)
       FROM publication p1, publication p2 
       WHERE p1.$id = p2.$id  
       and p1.publication_id < p2.publication_id 
@@ -81,7 +81,7 @@ sub checkDisplay {
   my ($self, $input, $desc, $diag) = @_; 
   
   my $sql_stmt = qq/
-      SELECT count(*)
+      SELECT COUNT(*)
       FROM $input,variation_citation 
       WHERE $input.variation_id = variation_citation.variation_id  
       and $input.display=0 

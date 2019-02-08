@@ -37,7 +37,15 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  
+  my $desc_length = 'Variation population size'; 
+  my $diag_length = 'Variation Populations have no stored size'; 
+  my $sql_length = qq/
+      SELECT COUNT(*)
+      FROM population p, sample_population sp
+      WHERE p.population_id = sp.population_id
+      AND p.size is NULL
+  /;
+  is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
 
 }
 
