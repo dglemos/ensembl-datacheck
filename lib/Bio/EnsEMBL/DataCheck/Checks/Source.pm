@@ -29,7 +29,7 @@ extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
 use constant {
   NAME        => 'Source',
-  DESCRIPTION => 'Checks that the source table is consistent',
+  DESCRIPTION => 'Checks that the variation source table is consistent',
   DB_TYPES    => ['variation'],
   TABLES      => ['source']
 };
@@ -37,42 +37,43 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  my $desc_length = 'Different versions set for dbSNP sources'; 
-  my $sql_length = qq/
+  my $desc_version = 'Different versions set for dbSNP sources'; 
+  my $sql_version = qq/
       SELECT COUNT(DISTINCT version)
       FROM source
       WHERE name like '%dbSNP%'
   /; 
-  cmp_rows($self->dba, $sql_length, '<=', 1, $desc_length); 
+  cmp_rows($self->dba, $sql_version, '<=', 1, $desc_version); 
 
-  my $desc_length_2 = 'Source description';
-  my $diag_length_2 = "Source description is missing"; 
-  my $sql_length_2 = qq/
+  my $desc_missing = 'Variation source description';
+  my $diag_missing = 'Variation source description is missing'; 
+  my $sql_desc = qq/
       SELECT count(*)
       FROM source
       WHERE description IS NULL
       or description = 'NULL'
   /;
-  is_rows_zero($self->dba, $sql_length_2, $desc_length_2, $diag_length_2); 
+  is_rows_zero($self->dba, $sql_desc, $desc_missing, $diag_missing); 
 
-  my $desc_length_3 = 'Source description length';
-  my $diag_length_3 = "Variation sources have long descriptions"; 
-  my $sql_length_3 = qq/
+  my $desc_length = 'Variation source description length';
+  my $diag_length = 'Variation sources have long descriptions'; 
+  my $sql_length = qq/
       SELECT count(*)
       FROM source
       WHERE length(description) > 100 
       and data_types = 'variation'
   /;
-  is_rows_zero($self->dba, $sql_length_3, $desc_length_3, $diag_length_3); 
+  is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
 
-  my $desc_length_4 = 'Source URL';
-  my $diag_length_4 = "Source URL is missing"; 
-  my $sql_length_4 = qq/
+  my $desc_url = 'Variation source URL';
+  my $diag_url = 'Variation source URL is missing'; 
+  my $sql_url = qq/
       SELECT count(*)
       FROM source
       WHERE url IS NULL
+      or url = 'NULL'
   /;
-  is_rows_zero($self->dba, $sql_length_4, $desc_length_4, $diag_length_4);  
+  is_rows_zero($self->dba, $sql_url, $desc_url, $diag_url);  
 
 }
 
