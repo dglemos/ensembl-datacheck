@@ -37,8 +37,7 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  my $desc_length = 'dbSNP sources version'; 
-  my $diag_length = "Different versions set for dbSNP sources";
+  my $desc_length = 'Different versions set for dbSNP sources'; 
   my $sql_length = qq/
       SELECT COUNT(DISTINCT version)
       FROM source
@@ -56,7 +55,7 @@ sub tests {
   /;
   is_rows_zero($self->dba, $sql_length_2, $desc_length_2, $diag_length_2); 
 
-  my $desc_length_3 = 'Source description';
+  my $desc_length_3 = 'Source description length';
   my $diag_length_3 = "Variation sources have long descriptions"; 
   my $sql_length_3 = qq/
       SELECT count(*)
@@ -65,6 +64,15 @@ sub tests {
       and data_types = 'variation'
   /;
   is_rows_zero($self->dba, $sql_length_3, $desc_length_3, $diag_length_3); 
+
+  my $desc_length_4 = 'Source URL';
+  my $diag_length_4 = "Source URL is missing"; 
+  my $sql_length_4 = qq/
+      SELECT count(*)
+      FROM source
+      WHERE url IS NULL
+  /;
+  is_rows_zero($self->dba, $sql_length_4, $desc_length_4, $diag_length_4);  
 
 }
 
