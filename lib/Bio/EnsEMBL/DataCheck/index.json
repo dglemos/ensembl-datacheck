@@ -589,6 +589,13 @@
       "name" : "PolyploidAttribs",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::PolyploidAttribs"
    },
+   "Population" : {
+      "datacheck_type" : "critical",
+      "description" : "Check the Variations Populations are entered as expected",
+      "groups" : [],
+      "name" : "Population",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Population"
+   },
    "ProbeUnique" : {
       "datacheck_type" : "critical",
       "description" : "Check that probe IDs and mappings are unique",
