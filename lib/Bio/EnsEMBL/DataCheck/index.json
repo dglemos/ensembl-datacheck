@@ -764,7 +764,7 @@
    },
    "Source" : {
       "datacheck_type" : "critical",
-      "description" : "Checks that the soucre table is consistent",
+      "description" : "Checks that the source table is consistent",
       "groups" : [],
       "name" : "Source",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Source"
