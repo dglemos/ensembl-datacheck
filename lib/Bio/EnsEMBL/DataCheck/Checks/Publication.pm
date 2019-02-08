@@ -40,9 +40,9 @@ sub tests {
   my $desc = 'Variation publication pmid, pmcid, doi'; 
   my $diag = 'Variation publications have duplicated rows'; 
 
-  $self->checkDuplicated('pmid', $desc, $diag); 
-  $self->checkDuplicated('pmcid', $desc, $diag); 
-  $self->checkDuplicated('doi', $desc, $diag); 
+  $self->checkDuplicated('pmid', $desc); 
+  $self->checkDuplicated('pmcid', $desc); 
+  $self->checkDuplicated('doi', $desc); 
 
   $self->checkDisplay('variation', 'Variation cited variants display', 'Variation cited variants have variation.display = 0'); 
   $self->checkDisplay('variation_feature', 'Variation cited variants display', 'Variation cited variants have variation_feature.display = 0');  
@@ -64,7 +64,7 @@ sub checkTitle {
 }
 
 sub checkDuplicated {
-  my ($self, $id, $desc, $diag) = @_; 
+  my ($self, $id, $desc) = @_; 
   
   my $sql_stmt = qq/
       SELECT count(*)
@@ -72,7 +72,7 @@ sub checkDuplicated {
       WHERE p1. '$id' = p2. '$id'  
       and p1.publication_id < p2.publication_id 
   /;
-  is_rows_zero($self->dba, $sql_stmt, $desc, $diag); 
+  is_rows_zero($self->dba, $sql_stmt, $desc, 'Variation publications are duplicated on '. $id);  
 }
 
 sub checkDisplay {
