@@ -47,6 +47,9 @@ sub tests {
   /;
   is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
 
+  my $species = $self->dba->species; 
+  
+
 }
 
 1;
