@@ -24,6 +24,7 @@ use strict;
 use Moose;
 use Test::More;
 use Bio::EnsEMBL::DataCheck::Test::DataCheck;
+use Data::Dumper; 
 
 extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
@@ -48,7 +49,7 @@ sub tests {
   is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
 
   my $species = $self->dba->species; 
-  
+  print "SPECIES: ", Dumper($species), "\n"; 
 
 }
 
