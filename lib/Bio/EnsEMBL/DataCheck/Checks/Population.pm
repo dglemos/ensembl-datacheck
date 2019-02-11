@@ -48,21 +48,26 @@ sub tests {
   is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
 
   my $species = $self->dba->species; 
-  my $desc = 'No populations have freqs_from_gts set'; 
-  $self->checkPopFrequencies($desc); 
+  if($species =~ /(homo_sapiens|mus_musculus)/){ 
+    my $desc = 'No populations have freqs_from_gts set'; 
+    my $sql = qq/
+        SELECT COUNT(*)
+        FROM population
+        WHERE freqs_from_gts = 1
+    /; 
+    is_rows_nonzero($self->dba, $sql, $desc); 
+  } 
 
-}
+  if($species =~ /(homo_sapiens)/){
+    my $desc = 'No populations have freqs_from_gts set'; 
+    my $sql = qq/
+        SELECT COUNT(DISTINCT display_group_id)
+        FROM population
+    /; 
+    cmp_rows($self->dba, $sql, '=', 3, $desc); 
+  }
 
-sub checkPopFrequencies {
-  my ($self, $desc) = @_; 
-
-  my $sql = qq/
-      SELECT COUNT(*)
-      FROM population
-      WHERE freqs_from_gts = 1;
-  /; 
-  is_rows_nonzero($self->dba, $sql, $desc); 
-}
+} 
 
 1;
 
