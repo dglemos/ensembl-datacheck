@@ -59,12 +59,12 @@ sub tests {
   } 
 
   if($species =~ /(homo_sapiens)/){
-    my $desc = 'No populations have freqs_from_gts set'; 
-    my $sql = qq/
+    my $desc_display = 'No populations have freqs_from_gts set'; 
+    my $sql_display = qq/
         SELECT COUNT(DISTINCT display_group_id)
         FROM population
     /; 
-    cmp_rows($self->dba, $sql, '=', 3, $desc); 
+    cmp_rows($self->dba, $sql_display, '==', 3, $desc_display); 
   }
 
 } 

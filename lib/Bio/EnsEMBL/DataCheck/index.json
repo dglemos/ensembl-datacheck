@@ -573,6 +573,13 @@
       "name" : "PepstatsAttributes",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::PepstatsAttributes"
    },
+   "Phenotype" : {
+      "datacheck_type" : "critical",
+      "description" : "Check that the Variation Phenotype table does not have empty descriptions",
+      "groups" : [],
+      "name" : "Phenotype",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Phenotype"
+   },
    "PhenotypeDescription" : {
       "datacheck_type" : "critical",
       "description" : "Check that imported description contains only supported characters",
@@ -591,7 +598,7 @@
    },
    "Population" : {
       "datacheck_type" : "critical",
-      "description" : "Check the Variations Populations are entered as expected",
+      "description" : "Check the Variation Populations are entered as expected",
       "groups" : [],
       "name" : "Population",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Population"
