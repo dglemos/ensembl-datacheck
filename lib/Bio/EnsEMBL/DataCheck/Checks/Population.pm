@@ -23,14 +23,13 @@ use strict;
 
 use Moose;
 use Test::More;
-use Bio::EnsEMBL::DataCheck::Test::DataCheck;
-use Data::Dumper; 
+use Bio::EnsEMBL::DataCheck::Test::DataCheck; 
 
 extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
 use constant {
   NAME        => 'Population',
-  DESCRIPTION => 'Check the Variations Populations are entered as expected',
+  DESCRIPTION => 'Check the Variation Populations are entered as expected',
   DB_TYPES    => ['variation'],
   TABLES      => ['population']
 };
@@ -49,8 +48,20 @@ sub tests {
   is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
 
   my $species = $self->dba->species; 
-  print "SPECIES: ", Dumper($species), "\n"; 
+  my $desc = 'No populations have freqs_from_gts set'; 
+  $self->checkPopFrequencies($desc); 
 
+}
+
+sub checkPopFrequencies {
+  my ($self, $desc) = @_; 
+
+  my $sql = qq/
+      SELECT COUNT(*)
+      FROM population
+      WHERE freqs_from_gts = 1;
+  /; 
+  is_rows_nonzero($self->dba, $sql, $desc); 
 }
 
 1;
