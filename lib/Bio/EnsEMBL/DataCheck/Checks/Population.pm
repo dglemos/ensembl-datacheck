@@ -24,6 +24,7 @@ use strict;
 use Moose;
 use Test::More;
 use Bio::EnsEMBL::DataCheck::Test::DataCheck; 
+use Data::Dumper; 
 
 extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
@@ -48,6 +49,7 @@ sub tests {
   is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
 
   my $species = $self->dba->species; 
+ 
   if($species =~ /(homo_sapiens|mus_musculus)/){ 
     my $desc = 'No populations have freqs_from_gts set'; 
     my $sql = qq/
@@ -59,7 +61,7 @@ sub tests {
   } 
 
   if($species =~ /(homo_sapiens)/){
-    my $desc_display = 'No populations have freqs_from_gts set'; 
+    my $desc_display = 'Number of display groups set for current population'; 
     my $sql_display = qq/
         SELECT COUNT(DISTINCT display_group_id)
         FROM population
