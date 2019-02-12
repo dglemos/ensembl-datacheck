@@ -587,6 +587,13 @@
       "name" : "PhenotypeDescription",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::PhenotypeDescription"
    },
+   "PhenotypeFeatureAttrib" : {
+      "datacheck_type" : "critical",
+      "description" : "Checks that imported Variation phenotype_feature_attrib values are reasonable",
+      "groups" : [],
+      "name" : "PhenotypeFeatureAttrib",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::PhenotypeFeatureAttrib"
+   },
    "PolyploidAttribs" : {
       "datacheck_type" : "critical",
       "description" : "Check that component genomes are annotated for polyploid genomes",
