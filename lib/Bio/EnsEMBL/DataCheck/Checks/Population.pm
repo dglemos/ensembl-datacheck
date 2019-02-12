@@ -24,7 +24,6 @@ use strict;
 use Moose;
 use Test::More;
 use Bio::EnsEMBL::DataCheck::Test::DataCheck; 
-use Data::Dumper; 
 
 extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
@@ -41,7 +40,7 @@ sub tests {
   my $desc_length = 'Variation population size'; 
   my $diag_length = 'Variation Populations have no stored size'; 
   my $sql_length = qq/
-      SELECT COUNT(*)
+      SELECT *
       FROM population p, sample_population sp
       WHERE p.population_id = sp.population_id
       AND p.size is NULL
@@ -53,7 +52,7 @@ sub tests {
   if($species =~ /(homo_sapiens|mus_musculus)/){ 
     my $desc = 'No populations have freqs_from_gts set'; 
     my $sql = qq/
-        SELECT COUNT(*)
+        SELECT *
         FROM population
         WHERE freqs_from_gts = 1
     /; 

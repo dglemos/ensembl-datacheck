@@ -38,8 +38,9 @@ sub tests {
   my ($self) = @_;
 
   $self->checkTitle('Variation publication title', 'Variation publications have no title'); 
+  $self->checkValues('Variation publication id values', 'Variation publications have no pmid, pmcid or doi');
 
-  my $desc = 'Variation publication pmid, pmcid, doi'; 
+  my $desc = 'Variation publication duplicated pmid, pmcid, doi'; 
   # my $diag = 'Variation publications have duplicated rows'; 
 
   $self->checkDuplicated('pmid', $desc); 
@@ -55,7 +56,7 @@ sub checkTitle {
   my ($self, $desc, $diag) = @_; 
 
   my $sql_title = qq/
-      SELECT COUNT(*)
+      SELECT *
       FROM publication
       WHERE title IS NULL
       or title = 'NULL'
@@ -65,11 +66,25 @@ sub checkTitle {
   
 }
 
+sub checkValues {
+  my ($self, $desc, $diag) = @_;
+
+  my $sql_values = qq/
+      SELECT *
+      FROM publication
+      WHERE pmid IS NULL
+      and pmcid IS NULL
+      and doi IS NULL
+  /;
+  is_rows_zero($self->dba, $sql_values, $desc, $diag);
+
+}
+
 sub checkDuplicated {
   my ($self, $id, $desc) = @_; 
   
   my $sql_stmt = qq/
-      SELECT COUNT(*)
+      SELECT *
       FROM publication p1, publication p2 
       WHERE p1.$id = p2.$id  
       and p1.publication_id < p2.publication_id 
@@ -81,7 +96,7 @@ sub checkDisplay {
   my ($self, $input, $desc, $diag) = @_; 
   
   my $sql_stmt = qq/
-      SELECT COUNT(*)
+      SELECT *
       FROM $input,variation_citation 
       WHERE $input.variation_id = variation_citation.variation_id  
       and $input.display=0 
