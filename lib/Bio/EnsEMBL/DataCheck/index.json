@@ -286,6 +286,15 @@
       "name" : "DNAEmpty",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::DNAEmpty"
    },
+   "DataFilesExist" : {
+      "datacheck_type" : "critical",
+      "description" : "Check that data files are defined in the database, and that the files exist",
+      "groups" : [
+         "funcgen"
+      ],
+      "name" : "DataFilesExist",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::DataFilesExist"
+   },
    "DatabaseCollation" : {
       "datacheck_type" : "critical",
       "description" : "Check that all tables in a database have the same collation, (latin1_swedish_ci)",
@@ -299,15 +308,6 @@
       ],
       "name" : "DatabaseCollation",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::DatabaseCollation"
-    },
-   "DataFilesExist" : {
-      "datacheck_type" : "critical",
-      "description" : "Check that data files are defined in the database, and that the files exist",
-      "groups" : [
-         "funcgen"
-      ],
-      "name" : "DataFilesExist",
-      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::DataFilesExist"
    },
    "Denormalized" : {
       "datacheck_type" : "critical",
@@ -318,6 +318,13 @@
       ],
       "name" : "Denormalized",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Denormalized"
+   },
+   "Description" : {
+      "datacheck_type" : "critical",
+      "description" : "Check that imported names or descriptions contain only supported characters",
+      "groups" : [],
+      "name" : "Description",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Description"
    },
    "DisplayableGenes" : {
       "datacheck_type" : "advisory",
@@ -643,6 +650,20 @@
       "name" : "PhenotypeDescription",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::PhenotypeDescription"
    },
+   "PhenotypeFeature" : {
+      "datacheck_type" : "critical",
+      "description" : "Check that the Variation PhenotypeFeature is consistent",
+      "groups" : [],
+      "name" : "PhenotypeFeature",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::PhenotypeFeature"
+   },
+   "PhenotypeFeatureAttrib" : {
+      "datacheck_type" : "critical",
+      "description" : "Checks that imported Variation phenotype_feature_attrib values are reasonable",
+      "groups" : [],
+      "name" : "PhenotypeFeatureAttrib",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::PhenotypeFeatureAttrib"
+   },
    "PolyploidAttribs" : {
       "datacheck_type" : "critical",
       "description" : "Check that component genomes are annotated for polyploid genomes",
@@ -835,6 +856,15 @@
       "name" : "SpeciesNameUnique",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::SpeciesNameUnique"
    },
+   "SpeciesTaxonomy" : {
+      "datacheck_type" : "critical",
+      "description" : "Check that taxonomy meta key is consistent with taxonomy database",
+      "groups" : [
+         "core"
+      ],
+      "name" : "SpeciesTaxonomy",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::SpeciesTaxonomy"
+   },
    "StableIDUnique" : {
       "datacheck_type" : "critical",
       "description" : "Check for uniqueness of stable IDs, both within a database, and across all databases in the registry",
@@ -845,14 +875,12 @@
       "name" : "StableIDUnique",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::StableIDUnique"
    },
-   "SpeciesTaxonomy" : {
+   "Study" : {
       "datacheck_type" : "critical",
-      "description" : "Check that taxonomy meta key is consistent with taxonomy database",
-      "groups" : [
-         "core"
-      ],
-      "name" : "SpeciesTaxonomy",
-      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::SpeciesTaxonomy"
+      "description" : "Check that Variation Study values are reasonable",
+      "groups" : [],
+      "name" : "Study",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Study"
    },
    "TranscriptBounds" : {
       "datacheck_type" : "critical",
