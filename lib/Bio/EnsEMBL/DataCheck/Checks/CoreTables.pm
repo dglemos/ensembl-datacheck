@@ -1,6 +1,6 @@
 =head1 LICENSE
 
-Copyright [2018] EMBL-European Bioinformatics Institute
+Copyright [2018-2019] EMBL-European Bioinformatics Institute
 
 Licensed under the Apache License, Version 2.0 (the 'License');
 you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
 use constant {
   NAME        => 'CoreTables',
-  DESCRIPTION => 'Check that appropriate core-like tables are identical to those in the core database',
+  DESCRIPTION => 'Requisite core-like tables are identical to those in the core database',
   GROUPS      => ['corelike'],
   DB_TYPES    => ['cdna', 'otherfeatures', 'rnaseq'],
   TABLES      => ['assembly', 'coord_system', 'seq_region', 'seq_region_attrib']
