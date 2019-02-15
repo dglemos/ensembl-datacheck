@@ -43,7 +43,7 @@ sub tests {
   my $desc_missing = 'Variation source description';
   my $diag_missing = 'Variation source description is missing'; 
   my $sql_desc = qq/
-      SELECT COUNT(*)
+      SELECT *
       FROM source
       WHERE description IS NULL
       or description = 'NULL'
@@ -53,17 +53,18 @@ sub tests {
   my $desc_length = 'Variation source description length';
   my $diag_length = 'Variation sources have long descriptions'; 
   my $sql_length = qq/
-      SELECT COUNT(*)
+      SELECT *
       FROM source
       WHERE length(description) > 100 
       and data_types = 'variation'
   /;
   is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
 
+  # ver este url no genomes (plants) porque este pode estar vazio noutro sitio 
   my $desc_url = 'Variation source URL';
   my $diag_url = 'Variation source URL is missing'; 
   my $sql_url = qq/
-      SELECT COUNT(*)
+      SELECT *
       FROM source
       WHERE url IS NULL
       or url = 'NULL'
