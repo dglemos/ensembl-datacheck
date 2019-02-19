@@ -411,4 +411,19 @@ sub denormalised {
   return denormalized(@_);
 }
 
+sub is_value_null{
+  my ($dbc, $table, $column, $regex) = @_;
+  
+  my $tb = $CLASS->builder; 
+  
+  my $sql = qq/
+    SELECT COUNT(*) 
+    FROM $table 
+    WHERE $column IS NULL 
+    OR $column = 'NULL'
+  /;  
+  
+  my ($count, $rows) = _query($dbc, $sql); 
+}
+
 1;
