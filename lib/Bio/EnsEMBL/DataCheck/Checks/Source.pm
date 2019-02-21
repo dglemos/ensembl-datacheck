@@ -84,7 +84,7 @@ sub tests {
       FROM source s1, source s2 
       WHERE s1.name < s2.name 
   /;
-  is_rows_zero($self->dba, $sql_dup, 'Source name duplicated', 'Source name duplicated on '. $id);  
+  is_rows_zero($self->dba, $sql_dup, 'Source name duplicated', 'Source name is duplicated');  
 
 }
 
