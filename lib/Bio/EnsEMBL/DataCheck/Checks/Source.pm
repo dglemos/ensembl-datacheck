@@ -75,6 +75,8 @@ sub tests {
   /;
   is_rows_zero($self->dba, $sql_url, $desc_url, $diag_url);  
 
+  is_value_null($self->dba, "source", "url", "Source URL missing"); 
+
 }
 
 1;
