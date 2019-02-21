@@ -423,8 +423,8 @@ This runs an SQL statement C<$sql> against the database connection C<$dbc>.
 Tests if a C<$table> contains C<$column> with null values. 
 If the number of rows is zero, the test will pass. 
 
-The SQL statement can be an explicit C<COUNT(*)> or a C<SELECT> statement whose rows will be counted.
-In the latter case, rows which are returned will be printed as diagnostic
+The SQL is a C<SELECT> statement whose rows will be counted.
+Which means, rows which are returned will be printed as diagnostic
 messages; we strongly advise providing a meaningful C<$diag_msg>, otherwise
 a generic one will be displayed. A maximum of 10 messages will be displayed
 The database connection can be a Bio::EnsEMBL::DBSQL::DBConnection or
@@ -438,12 +438,12 @@ out; it is optional, but we B<very> strongly encourage its use.
 =cut
 
 sub is_value_null{
-  my ($dbc, $table, $column, $msg) = @_;
+  my ($dbc, $table, $column, $name, $diag_msg) = @_;
   
   my $tb = $CLASS->builder; 
   
   my $sql = qq/
-    SELECT COUNT(*) 
+    SELECT *  
     FROM $table 
     WHERE $column IS NULL 
     OR $column = 'NULL'
@@ -451,7 +451,25 @@ sub is_value_null{
   
   my ($count, $rows) = _query($dbc, $sql); 
   
-  return $tb->is_eq($count, 0, $msg);  
+  if(defined $rows){
+    
+    my $counter = 0;
+    foreach my $row ( @$rows ) {
+      for ( @$row ) { $_ = 'NULL' unless defined $_; }
+      $tb->diag( "$diag_msg (" . join(', ', @$row) . ")" );
+      last if ++$counter == MAX_DIAG_ROWS;
+    }
+    
+    if ($count > MAX_DIAG_ROWS) {
+      $dbc = $dbc->dbc() if $dbc->can('dbc');
+      my $dbname = $dbc->dbname;
+      $tb->diag( 'Reached limit for number of diagnostic messages' );
+      $tb->diag( "Execute $sql against $dbname to see all results" );
+    }
+
+  }
+  
+  return $tb->is_eq($count, 0, $name); 
 }
 
 1;

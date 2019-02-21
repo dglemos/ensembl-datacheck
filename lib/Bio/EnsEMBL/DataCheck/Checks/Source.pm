@@ -37,13 +37,13 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  my $desc_version = 'Different versions set for dbSNP sources'; 
-  my $sql_version = qq/
-      SELECT COUNT(DISTINCT version)
-      FROM source
-      WHERE name like '%dbSNP%'
-  /; 
-  cmp_rows($self->dba, $sql_version, '<=', 1, $desc_version); 
+  # my $desc_version = 'Different versions set for dbSNP sources'; 
+  # my $sql_version = qq/
+  #     SELECT COUNT(DISTINCT version)
+  #     FROM source
+  #     WHERE name like '%dbSNP%'
+  # /; 
+  # cmp_rows($self->dba, $sql_version, '<=', 1, $desc_version); 
 
   my $desc_missing = 'Variation source description';
   my $diag_missing = 'Variation source description is missing'; 
@@ -75,7 +75,7 @@ sub tests {
   /;
   is_rows_zero($self->dba, $sql_url, $desc_url, $diag_url);  
 
-  is_value_null($self->dba, "source", "url", "Source URL missing"); 
+  is_value_null($self->dba, "source", "url", "Source URL missing", "Source URL is missing"); 
 
 }
 
