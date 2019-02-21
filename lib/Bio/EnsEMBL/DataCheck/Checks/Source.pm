@@ -65,9 +65,9 @@ sub tests {
   # /;
   # is_rows_zero($self->dba, $sql_url, $desc_url, $diag_url);  
 
-  is_value_null($self->dba, "source", "description", "Source description missing", "Source description is missing"); 
+  is_value_null($self->dba, 'source', 'description', 'Source description missing', 'Source description is missing'); 
 
-  is_value_null($self->dba, "source", "url", "Source URL missing", "Source URL is missing"); 
+  is_value_null($self->dba, 'source', 'url', 'Source URL missing', 'Source URL is missing'); 
 
   my $desc = 'Variation source description length';
   my $diag = 'Variation sources have long descriptions'; 
@@ -78,6 +78,13 @@ sub tests {
       and data_types = 'variation'
   /;
   is_rows_zero($self->dba, $sql, $desc, $diag); 
+
+  my $sql_dup = qq/
+      SELECT *
+      FROM source s1, source s2 
+      WHERE s1.name < s2.name 
+  /;
+  is_rows_zero($self->dba, $sql_dup, 'Source name duplicated', 'Source name duplicated on '. $id);  
 
 }
 
