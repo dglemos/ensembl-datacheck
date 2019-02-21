@@ -447,6 +447,7 @@ sub is_value_null{
     FROM $table 
     WHERE $column IS NULL 
     OR $column = 'NULL'
+    OR $column = '' 
   /;  
   
   my ($count, $rows) = _query($dbc, $sql); 

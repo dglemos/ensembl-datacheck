@@ -37,12 +37,11 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  $self->checkTitle('Variation publication title', 'Variation publications have no title'); 
-  $self->checkValues('Variation publication id values', 'Variation publications have no pmid, pmcid or doi');
+  is_value_null($self->dba, 'publication', 'title', 'Publication title missing', 'Publications have no title'); 
 
-  my $desc = 'Variation publication duplicated pmid, pmcid, doi'; 
-  # my $diag = 'Variation publications have duplicated rows'; 
+  $self->checkValues('Publication id values', 'Publications have no pmid, pmcid or doi');
 
+  my $desc = 'Publication duplicated pmid, pmcid, doi'; 
   $self->checkDuplicated('pmid', $desc); 
   $self->checkDuplicated('pmcid', $desc); 
   $self->checkDuplicated('doi', $desc); 
@@ -50,21 +49,7 @@ sub tests {
   $self->checkDisplay('variation', 'Variation cited variants display', 'Variation cited variants have variation.display = 0'); 
   $self->checkDisplay('variation_feature', 'Variation cited variants display', 'Variation cited variants have variation_feature.display = 0');  
 
-}
-
-sub checkTitle {
-  my ($self, $desc, $diag) = @_; 
-
-  my $sql_title = qq/
-      SELECT *
-      FROM publication
-      WHERE title IS NULL
-      or title = 'NULL'
-      or title = '' 
-  /;
-  is_rows_zero($self->dba, $sql_title, $desc, $diag); 
-  
-}
+} 
 
 sub checkValues {
   my ($self, $desc, $diag) = @_;

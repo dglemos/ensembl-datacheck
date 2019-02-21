@@ -35,16 +35,9 @@ use constant {
 };
 
 sub tests {
-  my ($self) = @_;
-
-  my $desc = 'Variation Phenotype descriptions'; 
-  my $diag = 'Variation Phenotype has empty descriptions'; 
-  my $sql = qq/
-      SELECT COUNT(*)
-      FROM phenotype
-      WHERE description is null OR description = ''
-  /;
-  is_rows_zero($self->dba, $sql, $desc, $diag); 
+  my ($self) = @_; 
+  
+  is_value_null($self->dba, 'phenotype', 'description', 'Phenotype description missing', 'Phenotypes have empty descriptions'); 
 
 }
 

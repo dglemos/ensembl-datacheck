@@ -37,8 +37,8 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  my $desc_length = 'Variation population size'; 
-  my $diag_length = 'Variation Populations have no stored size'; 
+  my $desc_length = 'Population size'; 
+  my $diag_length = 'Populations have no stored size'; 
   my $sql_length = qq/
       SELECT *
       FROM population p, sample_population sp
@@ -48,7 +48,7 @@ sub tests {
   is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length); 
 
   my $species = $self->dba->species; 
- 
+
   if($species =~ /(homo_sapiens|mus_musculus)/){ 
     my $desc = 'No populations have freqs_from_gts set'; 
     my $sql = qq/

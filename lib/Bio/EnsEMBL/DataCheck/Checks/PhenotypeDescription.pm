@@ -38,7 +38,7 @@ sub tests {
   my ($self) = @_;
 
   my $desc_length = 'Phenotype description length';
-  my $diag_length = "Row with suspiciously short description";
+  my $diag_length = "Phenotype with suspiciously short description";
   my $sql_length = qq/
       SELECT *
       FROM phenotype
@@ -48,7 +48,7 @@ sub tests {
   is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length);
 
   my $desc_newline = 'Phenotype description with new line';
-  my $diag_newline = "Row with unsupported new line";
+  my $diag_newline = "Phenotype with unsupported new line in description"; 
   my $sql_newline = qq/
       SELECT *
       FROM phenotype
@@ -57,8 +57,8 @@ sub tests {
   /;
   is_rows_zero($self->dba, $sql_newline, $desc_newline, $diag_newline);
 
-  my $desc_ascii = 'ASCII chars printable in description';
-  my $diag_ascii = "Row with unsupported ASCII chars";
+  my $desc_ascii = 'ASCII chars printable in phenotype description';
+  my $diag_ascii = "Phenotype description with unsupported ASCII chars";
   my $sql_ascii = qq/
       SELECT *
       FROM phenotype
@@ -69,7 +69,7 @@ sub tests {
   is_rows_zero($self->dba, $sql_ascii, $desc_ascii, $diag_ascii);
 
   my $desc_non_term = 'Meaningful phenotype description';
-  my $diag_non_term = 'Row description is not useful';
+  my $diag_non_term = 'Phenotype description is not useful';
   my $sql_non_term = qq/
       SELECT *
       FROM phenotype
