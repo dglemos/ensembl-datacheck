@@ -797,6 +797,13 @@
       "name" : "Source",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Source"
    },
+   "SourceDescription" : {
+      "datacheck_type" : "critical",
+      "description" : "Source table is consistent",
+      "groups" : [],
+      "name" : "SourceDescription",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::SourceDescription"
+   },
    "SpeciesNameUnique" : {
       "datacheck_type" : "critical",
       "description" : "Check that production_name and alias are unique across all species",

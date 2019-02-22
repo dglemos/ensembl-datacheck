@@ -37,7 +37,7 @@ use constant {
 sub tests {
   my ($self) = @_; 
 
-  is_value_null($self->dba, 'source', 'description', 'Source description missing', 'Source has no description'); 
+#  is_value_null($self->dba, 'source', 'description', 'Source description missing', 'Source has no description'); 
 
   is_value_null($self->dba, 'source', 'url', 'Source URL missing', 'Source has no URL'); 
 
@@ -50,15 +50,15 @@ sub tests {
   /;
   is_rows_zero($self->dba, $sql_url, $desc_url, $diag_url); 
 
-  my $desc_desc = 'Variation source description length';
-  my $diag_desc = 'Variation source has long descriptions'; 
-  my $sql_desc = qq/
-      SELECT *
-      FROM source
-      WHERE length(description) > 100 
-      and data_types = 'variation'
-  /;
-  is_rows_zero($self->dba, $sql_desc, $desc_desc, $diag_desc); 
+ # my $desc_desc = 'Variation source description length';
+ # my $diag_desc = 'Variation source has long descriptions'; 
+ # my $sql_desc = qq/
+ #     SELECT *
+ #     FROM source
+ #     WHERE length(description) > 100 
+ #     and data_types = 'variation'
+ # /;
+ # is_rows_zero($self->dba, $sql_desc, $desc_desc, $diag_desc); 
 
   my $desc_name = 'Source name duplicated';
   my $diag_name = 'Source name is duplicated'; 
@@ -70,13 +70,13 @@ sub tests {
   /;
   is_rows_zero($self->dba, $sql_name, $desc_name, $diag_name);  
 
-  my $desc_version = 'Different versions set for dbSNP sources'; 
-  my $sql_version = qq/
-      SELECT DISTINCT version 
-      FROM source
-      WHERE name like '%dbSNP%'
-  /; 
-  cmp_rows($self->dba, $sql_version, '<=', 1, $desc_version); 
+ # my $desc_version = 'Different versions set for dbSNP sources'; 
+ # my $sql_version = qq/
+ #     SELECT DISTINCT version 
+ #     FROM source
+ #     WHERE name like '%dbSNP%'
+ # /; 
+ # cmp_rows($self->dba, $sql_version, '<=', 1, $desc_version); 
 
 }
 
