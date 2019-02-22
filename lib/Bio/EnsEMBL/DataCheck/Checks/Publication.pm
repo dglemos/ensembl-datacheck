@@ -46,8 +46,8 @@ sub tests {
   $self->checkDuplicated('pmcid', $desc); 
   $self->checkDuplicated('doi', $desc); 
 
-  $self->checkDisplay('variation', 'Variation cited variants display', 'Variation cited variants have variation.display = 0'); 
-  $self->checkDisplay('variation_feature', 'Variation cited variants display', 'Variation cited variants have variation_feature.display = 0');  
+#  $self->checkDisplay('variation', 'Variation cited variants display', 'Variation cited variants have variation.display = 0'); 
+#  $self->checkDisplay('variation_feature', 'Variation cited variants display', 'Variation cited variants have variation_feature.display = 0');  
 
 } 
 
@@ -77,17 +77,17 @@ sub checkDuplicated {
   is_rows_zero($self->dba, $sql_stmt, $desc, 'Variation publications are duplicated on '. $id);  
 }
 
-sub checkDisplay {
-  my ($self, $input, $desc, $diag) = @_; 
-  
-  my $sql_stmt = qq/
-      SELECT *
-      FROM $input,variation_citation 
-      WHERE $input.variation_id = variation_citation.variation_id  
-      and $input.display=0 
-  /;
-  is_rows_zero($self->dba, $sql_stmt, $desc, $diag); 
-}
+#sub checkDisplay {
+#  my ($self, $input, $desc, $diag) = @_; 
+#  
+#  my $sql_stmt = qq/
+#      SELECT *
+#      FROM $input,variation_citation 
+#      WHERE $input.variation_id = variation_citation.variation_id  
+#      and $input.display=0 
+#  /;
+#  is_rows_zero($self->dba, $sql_stmt, $desc, $diag); 
+# }
 
 1;
 

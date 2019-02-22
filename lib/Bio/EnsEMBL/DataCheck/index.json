@@ -581,7 +581,7 @@
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Phenotype"
    },
    "PhenotypeDescription" : {
-      "datacheck_type" : "critical",
+      "datacheck_type" : "advisory",
       "description" : "Check that imported description contains only supported characters",
       "groups" : [],
       "name" : "PhenotypeDescription",
@@ -655,6 +655,13 @@
       "groups" : [],
       "name" : "Publication",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Publication"
+   },
+   "PublicationDescription" : {
+      "datacheck_type" : "advisory",
+      "description" : "Publications cited variants display",
+      "groups" : [],
+      "name" : "PublicationDescription",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::PublicationDescription"
    },
    "RegulatoryFeatureIsActive" : {
       "datacheck_type" : "critical",
@@ -798,7 +805,7 @@
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Source"
    },
    "SourceDescription" : {
-      "datacheck_type" : "advisory",
+      "datacheck_type" : "critical",
       "description" : "Source table is consistent",
       "groups" : [],
       "name" : "SourceDescription",
