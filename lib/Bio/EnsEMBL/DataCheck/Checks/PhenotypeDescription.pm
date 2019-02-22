@@ -37,6 +37,7 @@ use constant {
 sub tests {
   my ($self) = @_;
 
+
   my $desc_length = 'Phenotype description length';
   my $diag_length = "Phenotype with suspiciously short description";
   my $sql_length = qq/
@@ -76,6 +77,9 @@ sub tests {
       WHERE lower(description) in ("none", "not provided", "not specified", "not in omim", "variant of unknown significance", "not_provided", "?", ".")
   /;
   is_rows_zero($self->dba, $sql_non_term, $desc_non_term, $diag_non_term);
+
+  my $non_terms = "( \"None\", \"Not provided\", \"not specified\", \"Not in OMIM\", \"Variant of unknown significance\", \"not_provided\", \"?\", \".\" )";
+  is_non_term($self->dba, 'phenotype', 'description', $non_terms, 'Meaningful phenotype description', 'Phenotype description is not useful')
 
 }
 
