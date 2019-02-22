@@ -40,7 +40,7 @@ our @EXPORT  = qw(
   is_rows cmp_rows is_rows_zero is_rows_nonzero 
   row_totals row_subtotals
   fk denormalized denormalised is_value_null
-  is_non_term 
+  is_non_term unsupported_char 
 );
 
 use constant MAX_DIAG_ROWS => 10;
@@ -480,10 +480,10 @@ sub is_value_null{
 
 =item B<is_non_term>
 
-is_value_null($dbc, $table, $column, $test_name, $diag_msg);
+is_non_term($dbc, $table, $column, $terms, $test_name, $diag_msg);
 
 This runs an SQL statement C<$sql> against the database connection C<$dbc>. 
-Tests if a C<$table> contains C<$column> not useful terms. 
+Tests if a C<$table> contains C<$column> not useful C<$terms>. 
 If the number of rows is zero, the test will pass. 
 
 The SQL is a C<SELECT> statement whose rows will be counted.
@@ -511,6 +511,67 @@ sub is_non_term{
       WHERE lower($column) in $terms 
   /;
   
+  my ($count, $rows) = _query($dbc, $sql); 
+
+  if(defined $rows){
+    
+    my $counter = 0;
+    foreach my $row ( @$rows ) {
+      for ( @$row ) { $_ = 'NULL' unless defined $_; }
+      $tb->diag( "$diag_msg (" . join(', ', @$row) . ")" );
+      last if ++$counter == MAX_DIAG_ROWS;
+    }
+    
+    if ($count > MAX_DIAG_ROWS) {
+      $dbc = $dbc->dbc() if $dbc->can('dbc');
+      my $dbname = $dbc->dbname;
+      $tb->diag( 'Reached limit for number of diagnostic messages' );
+      $tb->diag( "Execute $sql against $dbname to see all results" );
+    }
+
+  }
+
+  return $tb->is_eq($count, 0, $name); 
+} 
+
+=head2 Testing unsupported characters  
+
+=over 4
+
+=item B<unsupported_char>
+
+unsupported_char($dbc, $table, $column, $test_name, $diag_msg);
+
+This runs an SQL statement C<$sql> against the database connection C<$dbc>. 
+Tests if a C<$table> contains C<$column> unsupported characters.  
+If the number of rows is zero, the test will pass. 
+
+The SQL is a C<SELECT> statement whose rows will be counted.
+Which means, rows which are returned will be printed as diagnostic
+messages; we strongly advise providing a meaningful C<$diag_msg>, otherwise
+a generic one will be displayed. A maximum of 10 messages will be displayed
+The database connection can be a Bio::EnsEMBL::DBSQL::DBConnection or
+DBAdaptor object.
+
+C<$test_name> is a very short description of the test that will be printed
+out; it is optional, but we B<very> strongly encourage its use.
+
+=back
+
+=cut
+
+sub unsupported_char{
+  my ($dbc, $table, $column, $name, $diag_msg) = @_;
+
+  my $tb = $CLASS->builder; 
+  
+  my $sql_ascii = qq/
+      SELECT *
+      FROM $table
+      WHERE $column REGEXP '[^ -;=\?-~]'
+      OR LEFT($column, 1) REGEXP '[^A-Za-z0-9]'
+  /; 
+
   my ($count, $rows) = _query($dbc, $sql); 
 
   if(defined $rows){
