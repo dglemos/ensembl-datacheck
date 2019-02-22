@@ -798,7 +798,7 @@
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::Source"
    },
    "SourceDescription" : {
-      "datacheck_type" : "critical",
+      "datacheck_type" : "advisory",
       "description" : "Source table is consistent",
       "groups" : [],
       "name" : "SourceDescription",
