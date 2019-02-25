@@ -565,7 +565,7 @@ sub unsupported_char{
 
   my $tb = $CLASS->builder; 
   
-  my $sql_ascii = qq/
+  my $sql = qq/
       SELECT *
       FROM $table
       WHERE $column REGEXP '[^ -;=\?-~]'
