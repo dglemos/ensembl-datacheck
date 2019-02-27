@@ -61,8 +61,7 @@ sub tests {
   unsupported_char($self->dba, 'phenotype', 'description', 'ASCII chars printable in phenotype description', 'Phenotype description with unsupported ASCII chars'); 
 
   my $non_terms = "( \"None\", \"Not provided\", \"not specified\", \"Not in OMIM\", \"Variant of unknown significance\", \"not_provided\", \"?\", \".\" )";
-  is_non_term($self->dba, 'phenotype', 'description', $non_terms, 'Meaningful phenotype description', 'Phenotype description is not useful')
-
+  is_non_term($self->dba, 'phenotype', 'description', $non_terms, 'Meaningful phenotype description', 'Phenotype description is not useful'); 
 }
 
 1;

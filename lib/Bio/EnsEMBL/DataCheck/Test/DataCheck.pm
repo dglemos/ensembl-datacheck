@@ -418,7 +418,7 @@ sub denormalised {
 
 =item B<is_value_null>
 
-is_value_null($dbc, $table, $column, $diag_msg, $diag_msg);
+is_value_null($dbc, $table, $column, $test_name, $diag_msg);
 
 This runs an SQL statement C<$sql> against the database connection C<$dbc>. 
 Tests if a C<$table> contains C<$column> with null values. 
@@ -439,7 +439,7 @@ out; it is optional, but we B<very> strongly encourage its use.
 =cut
 
 sub is_value_null{
-  my ($dbc, $table, $column, $name, $diag_msg) = @_;
+  my ($dbc, $table, $column, $test_name, $diag_msg) = @_;
   
   my $tb = $CLASS->builder; 
   
@@ -471,7 +471,7 @@ sub is_value_null{
 
   }
   
-  return $tb->is_eq($count, 0, $name); 
+  return $tb->is_eq($count, 0, $test_name); 
 }
 
 =head2 Testing not useful terms   
@@ -501,7 +501,7 @@ out; it is optional, but we B<very> strongly encourage its use.
 =cut
 
 sub is_non_term{
-  my ($dbc, $table, $column, $terms, $name, $diag_msg) = @_;
+  my ($dbc, $table, $column, $terms, $test_name, $diag_msg) = @_;
   
   my $tb = $CLASS->builder; 
   
@@ -531,7 +531,7 @@ sub is_non_term{
 
   }
 
-  return $tb->is_eq($count, 0, $name); 
+  return $tb->is_eq($count, 0, $test_name); 
 } 
 
 =head2 Testing unsupported characters  
@@ -561,7 +561,7 @@ out; it is optional, but we B<very> strongly encourage its use.
 =cut
 
 sub unsupported_char{
-  my ($dbc, $table, $column, $name, $diag_msg) = @_;
+  my ($dbc, $table, $column, $test_name, $diag_msg) = @_;
 
   my $tb = $CLASS->builder; 
   
@@ -592,7 +592,7 @@ sub unsupported_char{
 
   }
 
-  return $tb->is_eq($count, 0, $name); 
+  return $tb->is_eq($count, 0, $test_name); 
 } 
 
 1;
