@@ -58,25 +58,10 @@ sub tests {
   /;
   is_rows_zero($self->dba, $sql_newline, $desc_newline, $diag_newline);
 
-  my $desc_ascii = 'ASCII chars printable in description';
-  my $diag_ascii = "Row with unsupported ASCII chars";
-  my $sql_ascii = qq/
-      SELECT *
-      FROM phenotype
-      WHERE description REGEXP '[^ -;=\?-~]'
-      OR LEFT(description, 1) REGEXP '[^A-Za-z0-9]'
+  unsupported_char($self->dba, 'phenotype', 'description', 'ASCII chars printable in phenotype description', 'Phenotype description with unsupported ASCII chars'); 
 
-  /;
-  is_rows_zero($self->dba, $sql_ascii, $desc_ascii, $diag_ascii);
-
-  my $desc_non_term = 'Meaningful phenotype description';
-  my $diag_non_term = 'Row description is not useful';
-  my $sql_non_term = qq/
-      SELECT *
-      FROM phenotype
-      WHERE lower(description) in ("none", "not provided", "not specified", "not in omim", "variant of unknown significance", "not_provided", "?", ".")
-  /;
-  is_rows_zero($self->dba, $sql_non_term, $desc_non_term, $diag_non_term);
+  my $non_terms = "( \"None\", \"Not provided\", \"not specified\", \"Not in OMIM\", \"Variant of unknown significance\", \"not_provided\", \"?\", \".\" )";
+  is_non_term($self->dba, 'phenotype', 'description', $non_terms, 'Meaningful phenotype description', 'Phenotype description is not useful'); 
 
 }
 
