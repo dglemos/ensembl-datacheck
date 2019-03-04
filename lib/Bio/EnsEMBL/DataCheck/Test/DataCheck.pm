@@ -492,7 +492,7 @@ sub missing_value {
 
 find_terms($dbc, $table, $column, $terms, $test_name, $diag_msg);
 
-Tests if a C<$table> contains C<$column> a set of C<$terms>. 
+Tests if a C<$table> contains a set of C<$terms> in C<$column>. 
 If the number of rows is zero, the test will pass. 
 
 The SQL is a C<SELECT> statement whose rows will be counted.
@@ -551,7 +551,7 @@ sub find_terms {
 
 unsupported_char($dbc, $table, $column, $test_name, $diag_msg);
 
-Tests if a C<$table> contains C<$column> unsupported characters.  
+Tests if a C<$table> contains unsupported characters in C<$column>.  
 If the number of rows is zero, the test will pass. 
 
 The SQL is a C<SELECT> statement whose rows will be counted.
