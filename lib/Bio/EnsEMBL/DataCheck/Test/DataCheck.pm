@@ -431,8 +431,7 @@ sub denormalised {
 
 missing_value($dbc, $table, $column, $test_name, $diag_msg);
 
-This runs an SQL statement C<$sql> against the database connection C<$dbc>. 
-Tests if a C<$table> contains C<$column> with null values. 
+Tests if a C<$table> contains C<$column> with null or empty values. 
 If the number of rows is zero, the test will pass. 
 
 The SQL is a C<SELECT> statement whose rows will be counted.
@@ -493,8 +492,7 @@ sub missing_value {
 
 find_terms($dbc, $table, $column, $terms, $test_name, $diag_msg);
 
-This runs an SQL statement C<$sql> against the database connection C<$dbc>. 
-Tests if a C<$table> contains C<$column> not useful C<$terms>. 
+Tests if a C<$table> contains C<$column> a set of C<$terms>. 
 If the number of rows is zero, the test will pass. 
 
 The SQL is a C<SELECT> statement whose rows will be counted.
@@ -553,7 +551,6 @@ sub find_terms {
 
 unsupported_char($dbc, $table, $column, $test_name, $diag_msg);
 
-This runs an SQL statement C<$sql> against the database connection C<$dbc>. 
 Tests if a C<$table> contains C<$column> unsupported characters.  
 If the number of rows is zero, the test will pass. 
 
@@ -613,9 +610,8 @@ sub unsupported_char {
 =item B<duplicated_rows>
 
 duplicated_rows($dbc, $table, $column, $id, $test_name, $diag_msg);
-
-This runs an SQL statement C<$sql> against the database connection C<$dbc>. 
-Tests if a C<$table> contains duplicated rows in C<$column>.   
+ 
+Tests if a C<$table> contains duplicated C<$id> in C<$column>.        
 If the number of rows is zero, the test will pass. 
 
 The SQL is a C<SELECT> statement whose rows will be counted.
