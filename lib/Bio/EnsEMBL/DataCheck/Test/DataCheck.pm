@@ -517,7 +517,7 @@ sub find_terms {
   my $sql = qq/
       SELECT *
       FROM $table
-      WHERE lower($column) in $terms 
+      WHERE $column in $terms 
   /;
   
   my ($count, $rows) = _query($dbc, $sql); 

@@ -38,7 +38,7 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  my $non_terms = '(\'None\', \'not specified\', \'Not in OMIM\', \'Variant of unknown significance\', \'?\', \'.\')';
+  my $non_terms = '(\'none\', \'not specified\', \'not in OMIM\', \'variant of unknown significance\', \'?\', \'.\')';
   find_terms($self->dba, 'phenotype_feature_attrib', 'value', $non_terms, 'Meaningful phenotype_feature_attrib attribute value', 'phenotype_feature_attrib attribute value is not meaningful'); 
 
   unsupported_char($self->dba, 'phenotype_feature_attrib', 'value', 'ASCII chars printable in phenotype_feature_attrib attribute value', 'phenotype_feature_attrib attribute value with unsupported ASCII chars'); 
