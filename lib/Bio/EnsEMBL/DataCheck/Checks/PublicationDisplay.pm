@@ -30,6 +30,7 @@ extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 use constant {
   NAME        => 'PublicationDisplay',
   DESCRIPTION => 'Publication cited variants display',
+  GROUPS      => ['variation'], 
   DB_TYPES    => ['variation'],
   TABLES      => ['publication']
 };
@@ -37,8 +38,8 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  $self->checkDisplay('variation', 'Variation cited variants display', 'Variation cited variants have variation.display = 0'); 
-  $self->checkDisplay('variation_feature', 'Variation cited variants display', 'Variation cited variants have variation_feature.display = 0');
+  $self->checkDisplay('variation', 'Cited variant display', 'Cited variant has variation.display = 0'); 
+  $self->checkDisplay('variation_feature', 'Cited variant display', 'Cited variant has variation_feature.display = 0');
 
 }
 
@@ -49,7 +50,7 @@ sub checkDisplay {
       SELECT *
       FROM $input,variation_citation 
       WHERE $input.variation_id = variation_citation.variation_id  
-      and $input.display=0 
+      AND $input.display=0 
   /;
   is_rows_zero($self->dba, $sql_stmt, $desc, $diag); 
 }

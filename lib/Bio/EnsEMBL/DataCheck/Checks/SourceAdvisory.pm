@@ -16,7 +16,7 @@ limitations under the License.
 
 =cut
 
-package Bio::EnsEMBL::DataCheck::Checks::SourceDescription;
+package Bio::EnsEMBL::DataCheck::Checks::SourceAdvisory;
 
 use warnings;
 use strict;
@@ -28,8 +28,9 @@ use Bio::EnsEMBL::DataCheck::Test::DataCheck;
 extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
 use constant {
-  NAME        => 'SourceDescription',
-  DESCRIPTION => 'Source table is consistent',
+  NAME        => 'SourceAdvisory',
+  DESCRIPTION => 'Source table has descriptions and different dbSNP versions',
+  GROUPS      => ['variation'],
   DB_TYPES    => ['variation'],
   TABLES      => ['source']
 };
@@ -37,7 +38,9 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  is_value_null($self->dba, 'source', 'description', 'Source description missing', 'Source has no description');
+  missing_value($self->dba, 'source', 'description', 'Source description missing', 'Source has no description');
+
+  missing_value($self->dba, 'source', 'url', 'Source URL missing', 'Source has no URL');
 
   my $desc_desc = 'Source description length';
   my $diag_desc = 'Sources have long descriptions'; 
@@ -45,7 +48,7 @@ sub tests {
       SELECT *
       FROM source
       WHERE length(description) > 100 
-      and data_types = 'variation'
+      AND data_types = 'variation'
   /;
   is_rows_zero($self->dba, $sql_desc, $desc_desc, $diag_desc);
 

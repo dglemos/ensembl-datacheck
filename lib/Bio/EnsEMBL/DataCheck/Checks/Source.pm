@@ -29,7 +29,8 @@ extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
 use constant {
   NAME        => 'Source',
-  DESCRIPTION => 'Source table is consistent',
+  DESCRIPTION => 'Source table has consistent URLs and no duplicated names',
+  GROUPS      => ['variation'], 
   DB_TYPES    => ['variation'],
   TABLES      => ['source']
 };
@@ -46,15 +47,7 @@ sub tests {
   /;
   is_rows_zero($self->dba, $sql_url, $desc_url, $diag_url); 
 
-  my $desc_name = 'Source name duplicated';
-  my $diag_name = 'Source name is duplicated'; 
-  my $sql_name = qq/
-      SELECT *
-      FROM source s1, source s2 
-      WHERE s1.name = s2.name 
-      AND s1.source_id < s2.source_id 
-  /;
-  is_rows_zero($self->dba, $sql_name, $desc_name, $diag_name); 
+  duplicated_rows($self->dba, 'source', 'name', 'source_id', 'Source name duplicated', 'Source name is duplicated'); 
 
 }
 

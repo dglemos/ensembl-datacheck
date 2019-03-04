@@ -30,6 +30,7 @@ extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 use constant {
   NAME        => 'Phenotype',
   DESCRIPTION => 'Phenotype table does not have empty descriptions',
+  GROUPS      => ['variation'], 
   DB_TYPES    => ['variation'],
   TABLES      => ['phenotype']
 };
@@ -37,7 +38,7 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  is_value_null($self->dba, 'phenotype', 'description', 'Phenotype description missing', 'Phenotypes have empty descriptions');
+  missing_value($self->dba, 'phenotype', 'description', 'Phenotype description missing', 'Phenotype description is missing');
 
 }
 

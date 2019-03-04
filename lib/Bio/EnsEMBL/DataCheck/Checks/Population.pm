@@ -29,7 +29,8 @@ extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
 use constant {
   NAME        => 'Population',
-  DESCRIPTION => 'Population is entered as expected',
+  DESCRIPTION => 'Population data size is consistent',
+  GROUPS      => ['variation'], 
   DB_TYPES    => ['variation'],
   TABLES      => ['population']
 };
@@ -49,7 +50,7 @@ sub tests {
 
   my $species = $self->dba->species; 
 
-  if($species =~ /(homo_sapiens|mus_musculus)/){ 
+  if($species =~ /homo_sapiens|mus_musculus/){ 
     my $desc = 'No populations have freqs_from_gts set'; 
     my $sql = qq/
         SELECT *
@@ -59,7 +60,7 @@ sub tests {
     is_rows_nonzero($self->dba, $sql, $desc); 
   } 
 
-  if($species =~ /(homo_sapiens)/){
+  if($species =~ /homo_sapiens/){
     my $desc_display = 'Number of display groups set for current population'; 
     my $sql_display = qq/
         SELECT COUNT(DISTINCT display_group_id)

@@ -30,6 +30,7 @@ extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 use constant {
   NAME        => 'Publication',
   DESCRIPTION => 'There are no duplicated Publication entries',
+  GROUPS      => ['variation'],
   DB_TYPES    => ['variation'],
   TABLES      => ['publication']
 };
@@ -37,14 +38,14 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  is_value_null($self->dba, 'publication', 'title', 'Publication title missing', 'Publications have no title'); 
+  missing_value($self->dba, 'publication', 'title', 'Publication title missing', 'Publication with no title'); 
 
-  $self->checkValues('Publication id values', 'Publications have no pmid, pmcid or doi');
+  $self->checkValues('Publication id values', 'Publication with no pmid, pmcid and doi');
 
   my $desc = 'Publication duplicated pmid, pmcid, doi'; 
-  $self->checkDuplicated('pmid', $desc); 
-  $self->checkDuplicated('pmcid', $desc); 
-  $self->checkDuplicated('doi', $desc); 
+  duplicated_rows($self->dba, 'publication', 'pmid', 'publication_id', $desc, 'Publication is duplicated on pmid');   
+  duplicated_rows($self->dba, 'publication', 'pmcid', 'publication_id', $desc, 'Publication is duplicated on pmcid');
+  duplicated_rows($self->dba, 'publication', 'doi', 'publication_id', $desc, 'Publication is duplicated on doi');
 
 }
 
@@ -55,24 +56,11 @@ sub checkValues {
       SELECT *
       FROM publication
       WHERE pmid IS NULL
-      and pmcid IS NULL
-      and doi IS NULL
+      AND pmcid IS NULL
+      AND doi IS NULL
   /;
   is_rows_zero($self->dba, $sql_values, $desc, $diag);
-
 } 
-
-sub checkDuplicated {
-  my ($self, $id, $desc) = @_; 
-  
-  my $sql_stmt = qq/
-      SELECT *
-      FROM publication p1, publication p2 
-      WHERE p1.$id = p2.$id  
-      and p1.publication_id < p2.publication_id 
-  /;
-  is_rows_zero($self->dba, $sql_stmt, $desc, 'Variation publications are duplicated on '. $id);  
-}
 
 1;
 

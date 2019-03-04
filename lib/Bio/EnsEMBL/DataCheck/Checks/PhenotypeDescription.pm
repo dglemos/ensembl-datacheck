@@ -29,7 +29,7 @@ extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
 use constant {
   NAME        => 'PhenotypeDescription',
-  DESCRIPTION => 'Imported descriptions contain only supported characters',
+  DESCRIPTION => 'Imported phenotype description is useful and well-formed',
   GROUPS      => ['variation'],
   DB_TYPES    => ['variation'],
   TABLES      => ['phenotype']
@@ -39,7 +39,7 @@ sub tests {
   my ($self) = @_;
 
   my $desc_length = 'Phenotype description length';
-  my $diag_length = "Row with suspiciously short description";
+  my $diag_length = 'Row with suspiciously short description';
   my $sql_length = qq/
       SELECT *
       FROM phenotype
@@ -49,7 +49,7 @@ sub tests {
   is_rows_zero($self->dba, $sql_length, $desc_length, $diag_length);
 
   my $desc_newline = 'Phenotype description with new line';
-  my $diag_newline = "Row with unsupported new line";
+  my $diag_newline = 'Row with unsupported new line';
   my $sql_newline = qq/
       SELECT *
       FROM phenotype
@@ -60,8 +60,8 @@ sub tests {
 
   unsupported_char($self->dba, 'phenotype', 'description', 'ASCII chars printable in phenotype description', 'Phenotype description with unsupported ASCII chars'); 
 
-  my $non_terms = "( \"None\", \"Not provided\", \"not specified\", \"Not in OMIM\", \"Variant of unknown significance\", \"not_provided\", \"?\", \".\" )";
-  is_non_term($self->dba, 'phenotype', 'description', $non_terms, 'Meaningful phenotype description', 'Phenotype description is not useful'); 
+  my $non_terms = '(\'None\', \'Not provided\', \'not specified\', \'Not in OMIM\', \'Variant of unknown significance\', \'not_provided\', \'?\', \'.\')';  
+  find_terms($self->dba, 'phenotype', 'description', $non_terms, 'Meaningful phenotype description', 'Phenotype description is not meaningful'); 
 
 }
 

@@ -40,7 +40,8 @@ our @EXPORT  = qw(
   is_rows cmp_rows is_rows_zero is_rows_nonzero 
   row_totals row_subtotals
   fk denormalized denormalised
-  is_value_null is_non_term unsupported_char
+  missing_value find_terms unsupported_char
+  duplicated_rows
 );
 
 use constant MAX_DIAG_ROWS => 10;
@@ -422,13 +423,13 @@ sub denormalised {
   return denormalized(@_);
 }
 
-=head2 Testing null values  
+=head2 Testing empty values  
 
 =over 4
 
-=item B<is_value_null>
+=item B<missing_value>
 
-is_value_null($dbc, $table, $column, $test_name, $diag_msg);
+missing_value($dbc, $table, $column, $test_name, $diag_msg);
 
 This runs an SQL statement C<$sql> against the database connection C<$dbc>. 
 Tests if a C<$table> contains C<$column> with null values. 
@@ -448,7 +449,7 @@ out; it is optional, but we B<very> strongly encourage its use.
 
 =cut
 
-sub is_value_null{
+sub missing_value {
   my ($dbc, $table, $column, $test_name, $diag_msg) = @_;
   
   my $tb = $CLASS->builder; 
@@ -463,20 +464,20 @@ sub is_value_null{
   
   my ($count, $rows) = _query($dbc, $sql); 
   
-  if(defined $rows){
+  if (defined $rows) {
     
     my $counter = 0;
-    foreach my $row ( @$rows ) {
-      for ( @$row ) { $_ = 'NULL' unless defined $_; }
-      $tb->diag( "$diag_msg (" . join(', ', @$row) . ")" );
+    foreach my $row (@$rows) {
+      for (@$row) { $_ = 'NULL' unless defined $_; }
+      $tb->diag("$diag_msg (" . join(', ', @$row) . ")");
       last if ++$counter == MAX_DIAG_ROWS;
     }
     
     if ($count > MAX_DIAG_ROWS) {
       $dbc = $dbc->dbc() if $dbc->can('dbc');
       my $dbname = $dbc->dbname;
-      $tb->diag( 'Reached limit for number of diagnostic messages' );
-      $tb->diag( "Execute $sql against $dbname to see all results" );
+      $tb->diag('Reached limit for number of diagnostic messages');
+      $tb->diag("Execute $sql against $dbname to see all results");
     }
 
   }
@@ -484,13 +485,13 @@ sub is_value_null{
   return $tb->is_eq($count, 0, $test_name); 
 }
 
-=head2 Testing not useful terms   
+=head2 Finding terms    
 
 =over 4
 
-=item B<is_non_term>
+=item B<find_terms>
 
-is_non_term($dbc, $table, $column, $terms, $test_name, $diag_msg);
+find_terms($dbc, $table, $column, $terms, $test_name, $diag_msg);
 
 This runs an SQL statement C<$sql> against the database connection C<$dbc>. 
 Tests if a C<$table> contains C<$column> not useful C<$terms>. 
@@ -510,7 +511,7 @@ out; it is optional, but we B<very> strongly encourage its use.
 
 =cut
 
-sub is_non_term{
+sub find_terms {
   my ($dbc, $table, $column, $terms, $test_name, $diag_msg) = @_;
   
   my $tb = $CLASS->builder; 
@@ -523,20 +524,20 @@ sub is_non_term{
   
   my ($count, $rows) = _query($dbc, $sql); 
 
-  if(defined $rows){
+  if (defined $rows) {
     
     my $counter = 0;
     foreach my $row ( @$rows ) {
-      for ( @$row ) { $_ = 'NULL' unless defined $_; }
-      $tb->diag( "$diag_msg (" . join(', ', @$row) . ")" );
+      for (@$row) { $_ = 'NULL' unless defined $_; }
+      $tb->diag("$diag_msg (" . join(', ', @$row) . ")");
       last if ++$counter == MAX_DIAG_ROWS;
     }
     
     if ($count > MAX_DIAG_ROWS) {
       $dbc = $dbc->dbc() if $dbc->can('dbc');
       my $dbname = $dbc->dbname;
-      $tb->diag( 'Reached limit for number of diagnostic messages' );
-      $tb->diag( "Execute $sql against $dbname to see all results" );
+      $tb->diag('Reached limit for number of diagnostic messages');
+      $tb->diag("Execute $sql against $dbname to see all results");
     }
 
   }
@@ -570,7 +571,7 @@ out; it is optional, but we B<very> strongly encourage its use.
 
 =cut
 
-sub unsupported_char{
+sub unsupported_char {
   my ($dbc, $table, $column, $test_name, $diag_msg) = @_;
 
   my $tb = $CLASS->builder; 
@@ -584,20 +585,20 @@ sub unsupported_char{
 
   my ($count, $rows) = _query($dbc, $sql); 
 
-  if(defined $rows){
+  if (defined $rows) {
     
     my $counter = 0;
-    foreach my $row ( @$rows ) {
-      for ( @$row ) { $_ = 'NULL' unless defined $_; }
-      $tb->diag( "$diag_msg (" . join(', ', @$row) . ")" );
+    foreach my $row (@$rows) {
+      for (@$row) { $_ = 'NULL' unless defined $_; }
+      $tb->diag("$diag_msg (" . join(', ', @$row) . ")");
       last if ++$counter == MAX_DIAG_ROWS;
     }
     
     if ($count > MAX_DIAG_ROWS) {
       $dbc = $dbc->dbc() if $dbc->can('dbc');
       my $dbname = $dbc->dbname;
-      $tb->diag( 'Reached limit for number of diagnostic messages' );
-      $tb->diag( "Execute $sql against $dbname to see all results" );
+      $tb->diag('Reached limit for number of diagnostic messages');
+      $tb->diag("Execute $sql against $dbname to see all results");
     }
 
   }
@@ -605,5 +606,67 @@ sub unsupported_char{
   return $tb->is_eq($count, 0, $test_name); 
 } 
 
+=head2 Testing duplicated rows   
+
+=over 4
+
+=item B<duplicated_rows>
+
+duplicated_rows($dbc, $table, $column, $id, $test_name, $diag_msg);
+
+This runs an SQL statement C<$sql> against the database connection C<$dbc>. 
+Tests if a C<$table> contains duplicated rows in C<$column>.   
+If the number of rows is zero, the test will pass. 
+
+The SQL is a C<SELECT> statement whose rows will be counted.
+Which means, rows which are returned will be printed as diagnostic
+messages; we strongly advise providing a meaningful C<$diag_msg>, otherwise
+a generic one will be displayed. A maximum of 10 messages will be displayed
+The database connection can be a Bio::EnsEMBL::DBSQL::DBConnection or
+DBAdaptor object.
+
+C<$test_name> is a very short description of the test that will be printed
+out; it is optional, but we B<very> strongly encourage its use.
+
+=back
+
+=cut
+
+sub duplicated_rows {
+  my ($dbc, $table, $column, $id, $test_name, $diag_msg) = @_;
+
+  my $tb = $CLASS->builder; 
+  
+  my $sql = qq/
+      SELECT *
+      FROM $table t1, $table t2 
+      WHERE t1.$column = t2.$column 
+      AND t1.$id < t2.$id  
+  /; 
+
+  my ($count, $rows) = _query($dbc, $sql); 
+
+  if (defined $rows) {
+    
+    my $counter = 0;
+    foreach my $row ( @$rows ) {
+      for (@$row) { 
+        $_ = 'NULL' unless defined $_; 
+      }
+      $tb->diag( "$diag_msg (" . join(', ', @$row) . ")" );
+      last if ++$counter == MAX_DIAG_ROWS;
+    }
+    
+    if ($count > MAX_DIAG_ROWS) {
+      $dbc = $dbc->dbc() if $dbc->can('dbc');
+      my $dbname = $dbc->dbname;
+      $tb->diag('Reached limit for number of diagnostic messages');
+      $tb->diag("Execute $sql against $dbname to see all results");
+    }
+
+  }
+
+  return $tb->is_eq($count, 0, $test_name); 
+} 
 
 1;
