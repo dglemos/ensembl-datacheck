@@ -28,11 +28,12 @@ use Bio::EnsEMBL::DataCheck::Test::DataCheck;
 extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
 use constant {
-  NAME        => 'PhenotypeDescription',
-  DESCRIPTION => 'Imported phenotype description is useful and well-formed',
-  GROUPS      => ['variation'],
-  DB_TYPES    => ['variation'],
-  TABLES      => ['phenotype']
+  NAME           => 'PhenotypeDescription',
+  DESCRIPTION    => 'Imported phenotype description is useful and well-formed',
+  GROUPS         => ['variation'],
+  DB_TYPES       => ['variation'],
+  DATACHECK_TYPE => 'advisory',
+  TABLES         => ['phenotype']
 };
 
 sub tests {
@@ -58,7 +59,7 @@ sub tests {
   /;
   is_rows_zero($self->dba, $sql_newline, $desc_newline, $diag_newline);
 
-  unsupported_char($self->dba, 'phenotype', 'description', 'ASCII chars printable in phenotype description', 'Phenotype description with unsupported ASCII chars'); 
+  has_unsupported_char($self->dba, 'phenotype', 'description', 'ASCII chars printable in phenotype description', 'Phenotype description with unsupported ASCII chars'); 
 
   my $non_terms = '(\'none\', \'not provided\', \'not_provided\', \'not specified\', \'not in omim\', \'variant of unknown significance\', \'?\', \'.\')';  
   find_terms($self->dba, 'phenotype', 'description', $non_terms, 'Meaningful phenotype description', 'Phenotype description is not meaningful'); 

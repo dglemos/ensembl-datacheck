@@ -28,11 +28,12 @@ use Bio::EnsEMBL::DataCheck::Test::DataCheck;
 extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
 use constant {
-  NAME        => 'PhenotypeFeatureAttrib',
-  DESCRIPTION => 'Imported phenotype_feature_attrib value is meaningful and well-formed',
-  GROUPS      => ['variation'],
-  DB_TYPES    => ['variation'],
-  TABLES      => ['phenotype_feature_attrib']
+  NAME           => 'PhenotypeFeatureAttrib',
+  DESCRIPTION    => 'Imported phenotype_feature_attrib value is meaningful and well-formed',
+  GROUPS         => ['variation'],
+  DB_TYPES       => ['variation'],
+  DATACHECK_TYPE => 'advisory',
+  TABLES         => ['phenotype_feature_attrib']
 };
 
 sub tests {
@@ -41,7 +42,7 @@ sub tests {
   my $non_terms = '(\'none\', \'not specified\', \'not in OMIM\', \'variant of unknown significance\', \'?\', \'.\')';
   find_terms($self->dba, 'phenotype_feature_attrib', 'value', $non_terms, 'Meaningful phenotype_feature_attrib attribute value', 'phenotype_feature_attrib attribute value is not meaningful'); 
 
-  unsupported_char($self->dba, 'phenotype_feature_attrib', 'value', 'ASCII chars printable in phenotype_feature_attrib attribute value', 'phenotype_feature_attrib attribute value with unsupported ASCII chars'); 
+  has_unsupported_char($self->dba, 'phenotype_feature_attrib', 'value', 'ASCII chars printable in phenotype_feature_attrib attribute value', 'phenotype_feature_attrib attribute value with unsupported ASCII chars'); 
 
 }
 

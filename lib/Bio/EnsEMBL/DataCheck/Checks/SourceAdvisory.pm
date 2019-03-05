@@ -28,19 +28,20 @@ use Bio::EnsEMBL::DataCheck::Test::DataCheck;
 extends 'Bio::EnsEMBL::DataCheck::DbCheck';
 
 use constant {
-  NAME        => 'SourceAdvisory',
-  DESCRIPTION => 'Source table has descriptions and different dbSNP versions',
-  GROUPS      => ['variation'],
-  DB_TYPES    => ['variation'],
-  TABLES      => ['source']
+  NAME           => 'SourceAdvisory',
+  DESCRIPTION    => 'Source table has descriptions and different dbSNP versions',
+  GROUPS         => ['variation'],
+  DB_TYPES       => ['variation'],
+  DATACHECK_TYPE => 'advisory',
+  TABLES         => ['source']
 };
 
 sub tests {
   my ($self) = @_;
 
-  missing_value($self->dba, 'source', 'description', 'Source description missing', 'Source has no description');
+  is_missing_value($self->dba, 'source', 'description', 'Source description missing', 'Source has no description');
 
-  missing_value($self->dba, 'source', 'url', 'Source URL missing', 'Source has no URL');
+  is_missing_value($self->dba, 'source', 'url', 'Source URL missing', 'Source has no URL');
 
   my $desc_desc = 'Source description length';
   my $diag_desc = 'Sources have long descriptions'; 

@@ -40,7 +40,7 @@ our @EXPORT  = qw(
   is_rows cmp_rows is_rows_zero is_rows_nonzero 
   row_totals row_subtotals
   fk denormalized denormalised
-  missing_value find_terms unsupported_char
+  is_missing_value find_terms has_unsupported_char
   duplicated_rows
 );
 
@@ -513,7 +513,7 @@ sub find_terms {
   my ($dbc, $table, $column, $terms, $test_name, $diag_msg) = @_;
   
   my $tb = $CLASS->builder; 
-  
+ 
   my $sql = qq/
       SELECT *
       FROM $table
@@ -547,9 +547,9 @@ sub find_terms {
 
 =over 4
 
-=item B<unsupported_char>
+=item B<has_unsupported_char>
 
-unsupported_char($dbc, $table, $column, $test_name, $diag_msg);
+has_unsupported_char($dbc, $table, $column, $test_name, $diag_msg);
 
 Tests if a C<$table> contains unsupported characters in C<$column>.  
 If the number of rows is zero, the test will pass. 
@@ -568,7 +568,7 @@ out; it is optional, but we B<very> strongly encourage its use.
 
 =cut
 
-sub unsupported_char {
+sub has_unsupported_char {
   my ($dbc, $table, $column, $test_name, $diag_msg) = @_;
 
   my $tb = $CLASS->builder; 
