@@ -39,9 +39,9 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  is_missing_value($self->dba, 'source', 'description', 'Source description missing', 'Source has no description');
+  no_missing_value($self->dba, 'source', 'description', 'Source description missing', 'Source has no description');
 
-  is_missing_value($self->dba, 'source', 'url', 'Source URL missing', 'Source has no URL');
+  no_missing_value($self->dba, 'source', 'url', 'Source URL missing', 'Source has no URL');
 
   my $desc_desc = 'Source description length';
   my $diag_desc = 'Sources have long descriptions'; 

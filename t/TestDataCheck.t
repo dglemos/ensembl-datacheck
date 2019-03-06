@@ -39,7 +39,8 @@ diag('Methods');
 can_ok($module,
   qw( is_rows cmp_rows is_rows_zero is_rows_nonzero
       row_totals row_subtotals
-      fk denormalized denormalised ));
+      fk denormalized denormalised 
+      no_missing_value));
 
 subtest 'Counting Database Rows', sub {
   my $sql_1 = 'SELECT COUNT(*) FROM gene';
@@ -278,5 +279,26 @@ subtest 'Denormalized', sub {
   my $sql_fix = 'UPDATE variation SET display = display - 1';
   $dba->dbc->sql_helper->execute_update($sql_fix);
 };
+
+# Testing missing values 
+# subtest 'Testing empty values', sub {
+#  my $table_3 = 'source'; 
+#  my $col_empty_value = 'type'; 
+#  my $col_value = 'name';
+
+#  subtest 'empty values', sub {
+#    check_tests(
+#      sub {
+#        no_missing_value($dba, $table_3, $col_empty_value, 'fail: there are empty values');
+#        no_missing_value($dba, $table_3, $col_value, 'pass: no empty values');
+#      },
+#      [
+#        { ok => 0, depth => undef, name => 'fail: there are empty values' }, 
+#        { ok => 1, depth => undef }, 
+#      ], 
+#      'no_missing_value method' 
+#    ); 
+#  }; 
+#};
 
 done_testing();

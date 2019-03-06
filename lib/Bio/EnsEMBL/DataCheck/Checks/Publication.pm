@@ -38,7 +38,7 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  is_missing_value($self->dba, 'publication', 'title', 'Publication title missing', 'Publication with no title'); 
+  no_missing_value($self->dba, 'publication', 'title', 'Publication title missing', 'Publication with no title'); 
 
   $self->checkValues('Publication id values', 'Publication with no pmid, pmcid and doi');
 

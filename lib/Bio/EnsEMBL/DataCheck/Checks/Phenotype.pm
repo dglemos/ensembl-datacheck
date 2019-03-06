@@ -38,7 +38,7 @@ use constant {
 sub tests {
   my ($self) = @_;
 
-  is_missing_value($self->dba, 'phenotype', 'description', 'Phenotype description missing', 'Phenotype description is missing');
+  no_missing_value($self->dba, 'phenotype', 'description', 'Phenotype description missing', 'Phenotype description is missing');
 
 }
 

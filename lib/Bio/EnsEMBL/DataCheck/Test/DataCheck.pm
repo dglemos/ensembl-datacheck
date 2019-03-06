@@ -40,7 +40,7 @@ our @EXPORT  = qw(
   is_rows cmp_rows is_rows_zero is_rows_nonzero 
   row_totals row_subtotals
   fk denormalized denormalised
-  is_missing_value find_terms has_unsupported_char
+  no_missing_value find_terms has_unsupported_char
   duplicated_rows
 );
 
@@ -427,9 +427,9 @@ sub denormalised {
 
 =over 4
 
-=item B<missing_value>
+=item B<no_missing_value>
 
-missing_value($dbc, $table, $column, $test_name, $diag_msg);
+no_missing_value($dbc, $table, $column, $test_name, $diag_msg);
 
 Tests if a C<$table> contains C<$column> with null or empty values. 
 If the number of rows is zero, the test will pass. 
@@ -448,7 +448,7 @@ out; it is optional, but we B<very> strongly encourage its use.
 
 =cut
 
-sub missing_value {
+sub no_missing_value {
   my ($dbc, $table, $column, $test_name, $diag_msg) = @_;
   
   my $tb = $CLASS->builder; 
@@ -490,9 +490,9 @@ sub missing_value {
 
 =item B<find_terms>
 
-find_terms($dbc, $table, $column, $terms, $test_name, $diag_msg);
+find_terms($dbc, $table, $column, $terms_list, $test_name, $diag_msg);
 
-Tests if a C<$table> contains a set of C<$terms> in C<$column>. 
+Tests if a C<$table> contains a set of terms from C<$terms_list> in C<$column>. 
 If the number of rows is zero, the test will pass. 
 
 The SQL is a C<SELECT> statement whose rows will be counted.
@@ -510,14 +510,16 @@ out; it is optional, but we B<very> strongly encourage its use.
 =cut
 
 sub find_terms {
-  my ($dbc, $table, $column, $terms, $test_name, $diag_msg) = @_;
+  my ($dbc, $table, $column, $terms_list, $test_name, $diag_msg) = @_;
+
+  my $terms = join(",", map {"'$_'"} $terms_list);    
   
-  my $tb = $CLASS->builder; 
+  my $tb = $CLASS->builder;
  
   my $sql = qq/
       SELECT *
       FROM $table
-      WHERE $column in $terms 
+      WHERE lower($column) in ($terms) 
   /;
   
   my ($count, $rows) = _query($dbc, $sql); 
