@@ -1069,6 +1069,33 @@
       "name" : "VariationClasses",
       "package_name" : "Bio::EnsEMBL::DataCheck::Checks::VariationClasses"
    },
+   "VariationSet" : {
+      "datacheck_type" : "critical",
+      "description" : "Variation set is not missing name/description and contains valid id",
+      "groups" : [
+         "variation_import"
+      ],
+      "name" : "VariationSet",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::VariationSet"
+   },
+   "VariationSetStructure" : {
+      "datacheck_type" : "critical",
+      "description" : "Variation set only has one super set attached to it",
+      "groups" : [
+         "variation_import"
+      ],
+      "name" : "VariationSetStructure",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::VariationSetStructure"
+   },
+   "VariationSubset" : {
+      "datacheck_type" : "critical",
+      "description" : "Variation set is not a subset of itself",
+      "groups" : [
+         "variation_import"
+      ],
+      "name" : "VariationSubset",
+      "package_name" : "Bio::EnsEMBL::DataCheck::Checks::VariationSubset"
+   },
    "XrefTypes" : {
       "datacheck_type" : "advisory",
       "description" : "Xrefs are only attached to one feature type.",
